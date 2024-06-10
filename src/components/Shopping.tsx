@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ProductList from "./ProductList";
 
 //Declare a interface for types which correctly matched with the api
 interface ProductTypes {
@@ -9,35 +10,14 @@ interface ProductTypes {
   category: string;
 }
 
-//Product card
-const ProductCard: React.FC<{ product: ProductTypes }> = ({ product }) => {
-  return (
-    <div key={product.id} className="grid grid-cols-3 border p-4">
-      <h2>{product.title}</h2>
-      <p>${product.price}</p>
-      <img src={product.image} alt={product.title} className="w-full h-auto" />
-    </div>
-  );
-};
-
-//product list
-const ProductsList: React.FC<{ products: ProductTypes[] }> = ({ products }) => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-      {products.map((product) => (
-        <ProductCard product={product} key={product.id} />
-      ))}
-    </div>
-  );
-};
-
 //fetching product list
-const ShoppingCart: React.FC = () => {
+const Shopping: React.FC = () => {
   const [products, setProducts] = useState<ProductTypes[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsPerPage] = useState<number>(8);
+
 
   //fetching products and categories under useeffect hook that execute once after component mounts
   useEffect(() => {
@@ -47,17 +27,16 @@ const ShoppingCart: React.FC = () => {
           fetch("https://fakestoreapi.com/products"),
           fetch("https://fakestoreapi.com/products/categories"),
         ]);
-        const products = await productRes.json();
-        const categories = await categoryRes.json();
 
-        setProducts(products);
-        setCategories(categories);
+        setProducts(await productRes.json());
+        setCategories(await categoryRes.json());
       } catch (error) {
         console.error("Error fetching data", error);
       }
     };
     fetchData();
   }, []);
+
 
   //target the value comes from selecting an option
   const handleCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,10 +45,12 @@ const ShoppingCart: React.FC = () => {
     setCurrentPage(1);
   };
 
+
   //filter the products by selected category
   const filterProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
     : products;
+
 
   //calculating pages
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -78,9 +59,7 @@ const ShoppingCart: React.FC = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
   const totalPages = Math.ceil(filterProducts.length / productsPerPage);
-
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
@@ -107,10 +86,11 @@ const ShoppingCart: React.FC = () => {
       </div>
 
       {currentProducts.length > 0 ? (
-        <ProductsList products={currentProducts} />
+        <ProductList products={currentProducts} />
       ) : (
         <div>Loading...</div>
       )}
+
 
       <div className="fixed bottom-0 left-0 w-full bg-white border-t p-4 flex justify-center">
         {Array.from({ length: totalPages }, (_, index) => (
@@ -129,4 +109,4 @@ const ShoppingCart: React.FC = () => {
   );
 };
 
-export default ShoppingCart;
+export default Shopping;

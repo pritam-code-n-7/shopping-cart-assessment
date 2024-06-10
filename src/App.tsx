@@ -1,11 +1,16 @@
-import ShoppingCart from "./components/ShoppingCart"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ShoppingCart from "./components/Shopping";
+import ProductDetails from "./components/ProductDetails";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div>
-      <ShoppingCart />
-    </div>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ShoppingCart />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
