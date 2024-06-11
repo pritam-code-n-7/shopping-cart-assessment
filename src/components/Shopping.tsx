@@ -6,7 +6,6 @@ import InputField from "../reusables/InputField";
 import { Link } from "react-router-dom";
 import { FaCartArrowDown } from "react-icons/fa6";
 
-
 //fetching product list
 const Shopping: React.FC = () => {
   const { products, categories, loading } = useFetchData();
