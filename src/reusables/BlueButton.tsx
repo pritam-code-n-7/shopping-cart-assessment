@@ -7,7 +7,7 @@ const BlueButton = ({ name, onClick, type }: buttonTypes) => {
         name={name}
         onClick={onClick}
         type={type}
-        className="py-2 px-4 rounded bg-blue-600 text-white mt-2"
+        className="py-2 px-4 rounded bg-blue-600 text-white mt-2 "
       >
         {name}
       </button>

@@ -9,6 +9,10 @@ interface ProductTypes {
   image: string;
   category: string;
   description: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 const ProductDetails: React.FC = () => {
@@ -39,8 +43,12 @@ const ProductDetails: React.FC = () => {
       <p className="mb-4 text-balance">{product.description}</p>
       <p className="text-xl font-bold mb-4">${product.price}</p>
       <p className="mb-4">Category: {product.category}</p>
+      <p className="text-xl font-bold mb-4">Product Rating: {product.rating.rate}</p>
       <BlueButton
-       name="Back to shopping" onClick={() => navigate("/")} type="button" />
+        name="Back to shopping"
+        onClick={() => navigate("/")}
+        type="button"
+      />
     </div>
   );
 };
