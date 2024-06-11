@@ -39,7 +39,8 @@ const ProductDetails: React.FC = () => {
       <p className="mb-4 text-balance">{product.description}</p>
       <p className="text-xl font-bold mb-4">${product.price}</p>
       <p className="mb-4">Category: {product.category}</p>
-      <BlueButton name="Back to shopping" onClick={() => navigate("/")} type="button" />
+      <BlueButton
+       name="Back to shopping" onClick={() => navigate("/")} type="button" />
     </div>
   );
 };

@@ -1,8 +1,8 @@
-import { buttonType } from "./buttonType";
+import { buttonTypes } from "./buttonTypes";
 
-const BlueButton = ({ name, onClick, type }: buttonType) => {
+const BlueButton = ({ name, onClick, type }: buttonTypes) => {
   return (
-    <div> 
+    <div>
       <button
         name={name}
         onClick={onClick}
