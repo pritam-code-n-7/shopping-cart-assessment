@@ -12,12 +12,12 @@ const Cart: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen p-4">
       <div>
         <h1 className="text-center mb-4 font-bold text-lg">Your Cart</h1>
         {state.cart.length > 0 ? (
           state.cart.map((product) => (
-            <div key={product.id} className="border p-4 mb-4 grid grid-cols-4">
+            <div key={product.id} className="border p-4 mb-4 grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
               <Link to={`/product/${product.id}`}>
                 <h2 className="text-blue-600 text-pretty">{product.title}</h2>
               </Link>
@@ -39,7 +39,7 @@ const Cart: React.FC = () => {
           <p>Your cart is empty</p>
         )}
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-4">
         <BlueButton
           name="Back to Shopping"
           onClick={() => navigate("/")}
