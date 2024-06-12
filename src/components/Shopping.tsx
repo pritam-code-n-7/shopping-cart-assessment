@@ -1,10 +1,15 @@
-import { ChangeEvent, useState } from "react";
-import ProductList from "./ProductList";
+import { ChangeEvent, Suspense, lazy, useMemo, useState } from "react";
 import { useFetchData } from "../customhooks/FetchData";
 import Pagination from "../reusables/Pagination";
 import InputField from "../reusables/InputField";
 import { Link } from "react-router-dom";
 import { FaCartArrowDown } from "react-icons/fa6";
+
+
+//Lazy loading product list component
+const ProductList = lazy(() => import("./ProductList"));
+
+
 
 //fetching product list
 const Shopping: React.FC = () => {
@@ -16,6 +21,8 @@ const Shopping: React.FC = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [minRating, setMinRating] = useState<number>(0);
   const [sortOption, setSortOption] = useState<string>("");
+
+
 
   //category change
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -53,8 +60,10 @@ const Shopping: React.FC = () => {
     setCurrentPage(1);
   };
 
+
+
   //filter and sort products
-  const filterProducts = () => {
+  const filterProducts = useMemo(() => {
     let filteredProducts = products
       .filter(
         (product) =>
@@ -81,17 +90,28 @@ const Shopping: React.FC = () => {
       return 0;
     });
     return filteredProducts;
-  };
+  }, [
+    products,
+    searchTerm,
+    selectedCategory,
+    priceRange,
+    minRating,
+    sortOption,
+  ]);
+
+
 
   //calculating pages
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filterProducts().slice(
+  const currentProducts = filterProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-  const totalPages = Math.ceil(filterProducts().length / productsPerPage);
+  const totalPages = Math.ceil(filterProducts.length / productsPerPage);
 
+
+  
   return (
     <div>
       <div className="flex justify-between">
@@ -179,7 +199,9 @@ const Shopping: React.FC = () => {
         <div>Loading...</div>
       ) : (
         <div>
-          <ProductList products={currentProducts} />
+          <Suspense fallback={<div>Loading....</div>}>
+            <ProductList products={currentProducts} />
+          </Suspense>
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
