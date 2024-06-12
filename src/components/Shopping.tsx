@@ -1,17 +1,25 @@
-import { ChangeEvent, Suspense, lazy, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  Suspense,
+  lazy,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useFetchData } from "../customhooks/FetchData";
 import Pagination from "../reusables/Pagination";
 import InputField from "../reusables/InputField";
 import { Link } from "react-router-dom";
 import { FaCartArrowDown } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 //Lazy loading product list component
 const ProductList = lazy(() => import("./ProductList"));
 
 //fetching product list
 const Shopping: React.FC = () => {
-  const { products, categories, loading } = useFetchData();
+  const { products, categories, loading, error } = useFetchData();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -20,6 +28,13 @@ const Shopping: React.FC = () => {
   const [minRating, setMinRating] = useState<number>(0);
   const [sortOption, setSortOption] = useState<string>("");
   const [cartAnimation, setCartAnimation] = useState<boolean>(false);
+
+  //Handle error
+  useEffect(() => {
+    if (error) {
+      toast.error("An error occurred, please try again later");
+    }
+  }, [error]);
 
   //category change
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -193,10 +208,13 @@ const Shopping: React.FC = () => {
           </div>
         </div>
         <div className="p-2">
-          <p>Visit Cart:</p>
+          <p data-testid="cypress-title">Visit Cart:</p>
           <motion.div
-             animate={{ scale: cartAnimation ? 1.5 : 1, rotate: cartAnimation ? 360 : 0 }}
-             transition={{ duration: 0.5, ease: "easeInOut" }}
+            animate={{
+              scale: cartAnimation ? 1.5 : 1,
+              rotate: cartAnimation ? 360 : 0,
+            }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <Link to="/cart" className="p-2 flex gap-2">
               <FaCartArrowDown size={20} />

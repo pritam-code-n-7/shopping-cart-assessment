@@ -1,7 +1,7 @@
-// Shopping.test.tsx
+// src/components/Shopping.test.tsx
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';  // Correct import path
 import Shopping from './Shopping';
 import { BrowserRouter } from 'react-router-dom';
 import { useFetchData } from '../customhooks/FetchData';

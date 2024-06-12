@@ -5,7 +5,9 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": ["jest", "@testing-library/jest-dom","cypress"],
+    "types": ["jest","cypress","@testing-library/jest-dom"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -21,6 +23,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/setupTests.ts","cypress/**/*.ts", "cypress/**/*.js"],
+  "include": ["src", "src/setupTests.ts","cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

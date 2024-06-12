@@ -5,6 +5,7 @@ export const useFetchData = () => {
   const [products, setProducts] = useState<productTypes[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +23,7 @@ export const useFetchData = () => {
         setCategories(await categoryRes.json());
       } catch (error) {
         console.error("Error fetching data", error);
+        setError("Failed to fetch data. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -29,5 +31,5 @@ export const useFetchData = () => {
     fetchData();
   }, []);
 
-  return { products, categories, loading };
+  return { products, categories, loading, error };
 };
