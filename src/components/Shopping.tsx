@@ -4,12 +4,10 @@ import Pagination from "../reusables/Pagination";
 import InputField from "../reusables/InputField";
 import { Link } from "react-router-dom";
 import { FaCartArrowDown } from "react-icons/fa6";
-
+import { motion } from "framer-motion";
 
 //Lazy loading product list component
 const ProductList = lazy(() => import("./ProductList"));
-
-
 
 //fetching product list
 const Shopping: React.FC = () => {
@@ -21,8 +19,7 @@ const Shopping: React.FC = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [minRating, setMinRating] = useState<number>(0);
   const [sortOption, setSortOption] = useState<string>("");
-
-
+  const [cartAnimation, setCartAnimation] = useState<boolean>(false);
 
   //category change
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -59,8 +56,6 @@ const Shopping: React.FC = () => {
     setSortOption(event.target.value);
     setCurrentPage(1);
   };
-
-
 
   //filter and sort products
   const filterProducts = useMemo(() => {
@@ -99,8 +94,6 @@ const Shopping: React.FC = () => {
     sortOption,
   ]);
 
-
-
   //calculating pages
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -110,8 +103,14 @@ const Shopping: React.FC = () => {
   );
   const totalPages = Math.ceil(filterProducts.length / productsPerPage);
 
+  //add to cart animation
+  const triggerCartAnimation = () => {
+    setCartAnimation(true);
+    setTimeout(() => {
+      setCartAnimation(false);
+    }, 1000);
+  };
 
-  
   return (
     <div>
       <div className="flex justify-between">
@@ -122,6 +121,7 @@ const Shopping: React.FC = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="Search..."
+              aria-label="Search products"
             />
 
             <label htmlFor="category-select" className="block mb-2">
@@ -132,6 +132,7 @@ const Shopping: React.FC = () => {
               value={selectedCategory}
               onChange={handleCategoryChange}
               className="p-2 border"
+              aria-label="Filter by category"
             >
               <option value="">All</option>
               {categories.map((category) => (
@@ -149,6 +150,7 @@ const Shopping: React.FC = () => {
               onChange={(event) => handlePriceChange(event, "min")}
               label="Min Price:"
               htmlFor="price-min"
+              aria-label="Minimum price"
             />
             <InputField
               id="price-max"
@@ -157,6 +159,7 @@ const Shopping: React.FC = () => {
               onChange={(event) => handlePriceChange(event, "max")}
               label="Max Price:"
               htmlFor="price-max"
+              aria-label="Maximum price"
             />
             <InputField
               id="rating-select"
@@ -167,6 +170,7 @@ const Shopping: React.FC = () => {
               max="5"
               label="Min Rating:"
               htmlFor="rating-select"
+              aria-label="Minimum rating"
             />
           </div>
           <div>
@@ -179,6 +183,7 @@ const Shopping: React.FC = () => {
               value={sortOption}
               onChange={handleSortChange}
               className="p-2 border"
+              aria-label="Sort products"
             >
               <option value="">None</option>
               <option value="price-low-high">Price: Low-to-High </option>
@@ -187,11 +192,16 @@ const Shopping: React.FC = () => {
             </select>
           </div>
         </div>
-        <div>
-          <Link to="/cart" className="p-2 flex gap-2">
-            <p>Visit Cart</p>
-            <FaCartArrowDown size={20} />
-          </Link>
+        <div className="p-2">
+          <p>Visit Cart:</p>
+          <motion.div
+             animate={{ scale: cartAnimation ? 1.5 : 1, rotate: cartAnimation ? 360 : 0 }}
+             transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <Link to="/cart" className="p-2 flex gap-2">
+              <FaCartArrowDown size={20} />
+            </Link>
+          </motion.div>
         </div>
       </div>
 
@@ -200,12 +210,16 @@ const Shopping: React.FC = () => {
       ) : (
         <div>
           <Suspense fallback={<div>Loading....</div>}>
-            <ProductList products={currentProducts} />
+            <ProductList
+              products={currentProducts}
+              triggerCartAnimation={triggerCartAnimation}
+            />
           </Suspense>
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
+            aria-label="Product pagination"
           />
         </div>
       )}

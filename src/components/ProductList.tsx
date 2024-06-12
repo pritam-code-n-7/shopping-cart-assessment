@@ -5,17 +5,22 @@ import { useCart } from "../contexts/UseCart";
 
 interface ProductListProps {
   products: productTypes[];
+  triggerCartAnimation: () => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
+const ProductList: React.FC<ProductListProps> = ({
+  products,
+  triggerCartAnimation,
+}) => {
   const { dispatch } = useCart();
 
   const addToCart = (product: productTypes) => {
     dispatch({ type: "ADD_TO_CART", product });
+    triggerCartAnimation();
   };
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-8 gap-4">
       {products.map((product) => (
         <div key={product.id} className="border p-4">
           <Link to={`/product/${product.id}`}>
@@ -32,6 +37,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
               name="Add to Cart"
               onClick={() => addToCart(product)}
               type="button"
+              aria-label="Add to shopping cart button"
             />
           </div>
         </div>

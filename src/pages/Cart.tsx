@@ -31,6 +31,7 @@ const Cart: React.FC = () => {
                 name="Remove from Cart"
                 onClick={() => removeFromCart(product.id)}
                 type="button"
+                aria-label="Remove from the cart button"
               />
             </div>
           ))
@@ -43,6 +44,7 @@ const Cart: React.FC = () => {
           name="Back to Shopping"
           onClick={() => navigate("/")}
           type="button"
+          aria-label="Back button"
         />
       </div>
     </div>

@@ -10,6 +10,7 @@ const InputField = ({
   max,
   htmlFor,
   label,
+  "aria-label": ariaLabel,
 }: InputTypes) => {
   return (
     <div>
@@ -24,6 +25,7 @@ const InputField = ({
         id={id}
         min={min}
         max={max}
+        aria-label={ariaLabel}
         className="p-2 border mb-2"
       />
     </div>

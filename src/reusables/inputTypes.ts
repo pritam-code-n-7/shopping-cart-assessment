@@ -8,6 +8,7 @@ export interface InputTypes {
   id?: string;
   min?: string;
   max?: string;
-  htmlFor?:string;
-  label?:string;
+  htmlFor?: string;
+  label?: string;
+  "aria-label"?: string;
 }
