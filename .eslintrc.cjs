@@ -1,6 +1,10 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2020: true,
+    'cypress/globals': true, // Add Cypress globals
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
