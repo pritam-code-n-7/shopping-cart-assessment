@@ -37,7 +37,7 @@ const ProductList: React.FC<ProductListProps> = ({
               name="Add to Cart"
               onClick={() => addToCart(product)}
               type="button"
-              aria-label="Add to shopping cart button"
+              ariaLabel="Add to shopping cart button"
             />
           </div>
         </div>

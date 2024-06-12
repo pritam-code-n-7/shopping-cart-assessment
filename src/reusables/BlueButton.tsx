@@ -4,7 +4,7 @@ const BlueButton = ({
   name,
   onClick,
   type,
-  "aria-label": ariaLabel,
+   ariaLabel,
 }: buttonTypes) => {
   return (
     <div>
