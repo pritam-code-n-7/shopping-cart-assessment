@@ -14,8 +14,11 @@ import { FaCartArrowDown } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
+
 //Lazy loading product list component
 const ProductList = lazy(() => import("./ProductList"));
+
+
 
 //fetching product list
 const Shopping: React.FC = () => {
@@ -29,12 +32,16 @@ const Shopping: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("");
   const [cartAnimation, setCartAnimation] = useState<boolean>(false);
 
+
+
   //Handle error
   useEffect(() => {
     if (error) {
       toast.error("An error occurred, please try again later");
     }
   }, [error]);
+
+
 
   //category change
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -109,6 +116,8 @@ const Shopping: React.FC = () => {
     sortOption,
   ]);
 
+
+
   //calculating pages
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -118,6 +127,8 @@ const Shopping: React.FC = () => {
   );
   const totalPages = Math.ceil(filterProducts.length / productsPerPage);
 
+
+
   //add to cart animation
   const triggerCartAnimation = () => {
     setCartAnimation(true);
@@ -126,11 +137,13 @@ const Shopping: React.FC = () => {
     }, 1000);
   };
 
+
+
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="p-2 flex gap-4">
-          <div>
+      <div className="container mx-auto px-4 relative">
+        <div className="flex flex-col md:flex-row justify-between">
+          <div className="flex flex-col md:flex-row items-start md:items-center w-full md:w-auto md:mr-4">
             <InputField
               type="text"
               value={searchTerm}
@@ -139,7 +152,7 @@ const Shopping: React.FC = () => {
               aria-label="Search products"
             />
 
-            <label htmlFor="category-select" className="block mb-2">
+            <label htmlFor="category-select" className="block mb-2 pr-2">
               Filter by category:
             </label>
             <select
@@ -157,7 +170,7 @@ const Shopping: React.FC = () => {
               ))}
             </select>
           </div>
-          <div>
+          <div className="flex flex-col md:flex-row items-start md:items-center w-full md:w-auto md:mr-4">
             <InputField
               id="price-min"
               type="number"
@@ -188,8 +201,8 @@ const Shopping: React.FC = () => {
               aria-label="Minimum rating"
             />
           </div>
-          <div>
-            <label htmlFor="sort-select" className="block mt-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center w-full md:w-auto">
+            <label htmlFor="sort-select" className="block pr-2">
               Sort by:
             </label>
 
@@ -207,8 +220,8 @@ const Shopping: React.FC = () => {
             </select>
           </div>
         </div>
-        <div className="p-2">
-          <p data-testid="cypress-title">Visit Cart:</p>
+        <div className="fixed bottom-4 right-4 z-10">
+          <p className="font-bold text-blue-600" data-testid="cypress-title">Visit Cart:</p>
           <motion.div
             animate={{
               scale: cartAnimation ? 1.5 : 1,
@@ -222,6 +235,7 @@ const Shopping: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
 
       {loading ? (
         <div>Loading...</div>

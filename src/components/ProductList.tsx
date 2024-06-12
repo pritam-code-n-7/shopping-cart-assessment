@@ -20,7 +20,7 @@ const ProductList: React.FC<ProductListProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-8 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
       {products.map((product) => (
         <div key={product.id} className="border p-4">
           <Link to={`/product/${product.id}`}>
@@ -30,7 +30,7 @@ const ProductList: React.FC<ProductListProps> = ({
           <img
             src={product.image}
             alt={product.title}
-            className="w-full h-auto object-cover"
+            className="w-full h-auto"
           />
           <div className="">
             <BlueButton
