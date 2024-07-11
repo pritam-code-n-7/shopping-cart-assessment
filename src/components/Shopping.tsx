@@ -13,12 +13,10 @@ import { Link } from "react-router-dom";
 import { FaCartArrowDown } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-
+import BlueButton from "../reusables/BlueButton";
 
 //Lazy loading product list component
 const ProductList = lazy(() => import("./ProductList"));
-
-
 
 //fetching product list
 const Shopping: React.FC = () => {
@@ -31,8 +29,7 @@ const Shopping: React.FC = () => {
   const [minRating, setMinRating] = useState<number>(0);
   const [sortOption, setSortOption] = useState<string>("");
   const [cartAnimation, setCartAnimation] = useState<boolean>(false);
-
-
+  const [removeFilters, setRemoveFilters] = useState<boolean>(false);
 
   //Handle error
   useEffect(() => {
@@ -40,8 +37,6 @@ const Shopping: React.FC = () => {
       toast.error("An error occurred, please try again later");
     }
   }, [error]);
-
-
 
   //category change
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -116,7 +111,22 @@ const Shopping: React.FC = () => {
     sortOption,
   ]);
 
+  //for remove all filters
+  const handleRemoveFilters = () => {
+    setRemoveFilters(true);
+    if (removeFilters) {
+      ResetFunc();
+    }
+    return;
+  };
 
+  function ResetFunc() {
+    setMinRating(0);
+    setPriceRange([0, 1000]);
+    setSearchTerm("");
+    setSortOption("");
+    setSelectedCategory("");
+  }
 
   //calculating pages
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -127,8 +137,6 @@ const Shopping: React.FC = () => {
   );
   const totalPages = Math.ceil(filterProducts.length / productsPerPage);
 
-
-
   //add to cart animation
   const triggerCartAnimation = () => {
     setCartAnimation(true);
@@ -137,11 +145,16 @@ const Shopping: React.FC = () => {
     }, 1000);
   };
 
-
-
   return (
     <div>
       <div className="container mx-auto px-4 relative">
+        <div className="flex justify-center">
+          <BlueButton
+            type="button"
+            name="Reset"
+            onClick={handleRemoveFilters}
+          />
+        </div>
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col md:flex-row items-start md:items-center w-full md:w-auto md:mr-4">
             <InputField
@@ -221,7 +234,9 @@ const Shopping: React.FC = () => {
           </div>
         </div>
         <div className="fixed bottom-4 right-4 z-10">
-          <p className="font-bold text-blue-600" data-testid="cypress-title">Visit Cart:</p>
+          <p className="font-bold text-blue-600" data-testid="cypress-title">
+            Visit Cart:
+          </p>
           <motion.div
             animate={{
               scale: cartAnimation ? 1.5 : 1,
@@ -235,7 +250,6 @@ const Shopping: React.FC = () => {
           </motion.div>
         </div>
       </div>
-
 
       {loading ? (
         <div>Loading...</div>
